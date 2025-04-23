@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EduEquip.ViewOverdueEquipment"
+             Title="View Overdue Equipment">
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Label Grid.Row="0" 
+               Text="Overdue Equipment" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               Margin="0,0,0,20" />
+
+        <!-- Search and Filter Section -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Entry Grid.Column="0" 
+                   Placeholder="Search by student name or equipment ID" 
+                   x:Name="SearchEntry" 
+                   TextChanged="OnSearchTextChanged" />
+
+            <Button Grid.Column="1" 
+                    Text="Search" 
+                    Margin="10,0,0,0" 
+                    Clicked="OnSearchClicked" />
+
+            <Button Grid.Column="2" 
+                    Text="Clear" 
+                    Margin="10,0,0,0" 
+                    Clicked="OnClearClicked" />
+        </Grid>
+
+        <!-- Overdue Equipment List -->
+        <CollectionView Grid.Row="2" 
+                        x:Name="OverdueEquipmentCollection" 
+                        SelectionMode="Single" 
+                        SelectionChanged="OnEquipmentSelected">
+            <CollectionView.EmptyView>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="No overdue equipment found." 
+                           FontSize="18" 
+                           TextColor="Gray" 
+                           HorizontalTextAlignment="Center" />
+                </StackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,5" Padding="15" BorderColor="LightGray">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" 
+                                   Text="{Binding EquipmentName}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold" />
+
+                            <Label Grid.Row="0" Grid.Column="1" 
+                                   Text="{Binding DaysOverdue, StringFormat='{0} days overdue'}" 
+                                   TextColor="Red" 
+                                   FontAttributes="Bold" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                                   Text="{Binding StudentName, StringFormat='Borrowed by: {0}'}" 
+                                   FontSize="16" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                                   Text="{Binding ProjectName, StringFormat='Project: {0}'}" 
+                                   FontSize="14" />
+
+                            <Label Grid.Row="3" Grid.Column="0" 
+                                   Text="{Binding DueDate, StringFormat='Due date: {0:MMM dd, yyyy}'}" 
+                                   FontSize="14" />
+
+                            <Button Grid.Row="3" Grid.Column="1" 
+                                    Text="Send Reminder" 
+                                    BackgroundColor="#FF5252" 
+                                    TextColor="White" 
+                                    CornerRadius="5" 
+                                    Padding="10,5" 
+                                    CommandParameter="{Binding Id}" 
+                                    Clicked="OnSendReminderClicked" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Action Buttons -->
+        <Grid Grid.Row="3" Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" 
+                    Text="Generate Report" 
+                    Margin="0,0,5,0" 
+                    BackgroundColor="#4CAF50" 
+                    TextColor="White" 
+                    Clicked="OnGenerateReportClicked" />
+
+            <Button Grid.Column="1" 
+                    Text="Back to Dashboard" 
+                    Margin="5,0,0,0" 
+                    Clicked="OnBackToDashboardClicked" />
+        </Grid>
+    </Grid>
+</ContentPage>
